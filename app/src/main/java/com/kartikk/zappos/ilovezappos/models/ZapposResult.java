@@ -166,4 +166,19 @@ public class ZapposResult implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "ZapposResult{" +
+                "brandName='" + brandName + '\'' +
+                ", thumbnailImageUrl='" + thumbnailImageUrl + '\'' +
+                ", productId='" + productId + '\'' +
+                ", originalPrice='" + originalPrice + '\'' +
+                ", styleId='" + styleId + '\'' +
+                ", colorId='" + colorId + '\'' +
+                ", price='" + price + '\'' +
+                ", percentOff='" + percentOff + '\'' +
+                ", productUrl='" + productUrl + '\'' +
+                ", productName='" + productName + '\'' +
+                '}';
+    }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ZapposModel implements Parcelable {
 
+
     @SerializedName("originalTerm")
     @Expose
     private Object originalTerm;
@@ -116,6 +117,17 @@ public class ZapposModel implements Parcelable {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "ZapposModel{" +
+                "originalTerm=" + originalTerm +
+                ", currentResultCount='" + currentResultCount + '\'' +
+                ", totalResultCount='" + totalResultCount + '\'' +
+                ", term='" + term + '\'' +
+                ", results=" + results +
+                ", statusCode='" + statusCode + '\'' +
+                '}';
+    }
 }
 
 
