@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ItemDetailBinding itemDetailBinding = DataBindingUtil.setContentView(this, R.layout.item_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ZapposResult result = getIntent().getParcelableExtra("result");
         itemDetailBinding.setResult(result);
         if (result.getOriginalPrice().equals(result.getPrice())) {
@@ -50,5 +52,11 @@ public class DetailActivity extends AppCompatActivity {
     @BindingAdapter("bind:imageUrl")
     public static void loadImage(ImageView imageView, String url) {
         Picasso.with(imageView.getContext()).load(url).into(imageView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return true;
     }
 }
