@@ -6,6 +6,12 @@
         <variable
             name="result"
             type="com.kartikk.zappos.ilovezappos.models.ZapposResult" />
+
+        <variable
+            name="adapter"
+            type="com.kartikk.zappos.ilovezappos.SearchRecyclerAdapter" />
+
+        <import type="android.view.View" />
     </data>
 
     <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,6 +31,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:padding="8dp"
+                android:transitionName="image"
                 app:imageUrl="@{result.thumbnailImageUrl}" />
 
             <TextView
@@ -36,7 +43,8 @@
                 android:ellipsize="marquee"
                 android:maxLines="1"
                 android:text="@{result.productName}"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:transitionName="product_name" />
 
             <TextView
                 android:id="@+id/card_search_brand_text"
@@ -48,10 +56,11 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{result.brandName}"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:transitionName="brand_name" />
 
             <TextView
-                android:id="@+id/card_search_org_price_text"
+                android:id="@+id/card_search_price_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/card_search_brand_text"
@@ -59,32 +68,37 @@
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{result.originalPrice}"
-                android:textSize="14sp" />
+                android:text="@{result.price}"
+                android:textSize="14sp"
+                android:transitionName="price" />
 
             <TextView
-                android:id="@+id/card_search_price_text"
+                android:id="@+id/card_search_org_price_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/card_search_org_price_text"
-                android:layout_marginStart="2sp"
-                android:layout_toEndOf="@+id/card_search_org_price_text"
+                android:layout_alignTop="@+id/card_search_price_text"
+                android:layout_marginStart="4sp"
+                android:layout_toEndOf="@+id/card_search_price_text"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{result.price}"
-                android:textSize="14sp" />
+                android:text="@{result.originalPrice}"
+                android:textSize="14sp"
+                android:transitionName="org_price"
+                android:visibility="@{result.price != result.originalPrice? View.GONE: View.VISIBLE}" />
 
             <TextView
                 android:id="@+id/card_search_discount_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/card_search_price_text"
-                android:layout_marginStart="2sp"
-                android:layout_toEndOf="@+id/card_search_price_text"
+                android:layout_alignTop="@+id/card_search_org_price_text"
+                android:layout_marginStart="4sp"
+                android:layout_toEndOf="@+id/card_search_org_price_text"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{result.percentOff}"
-                android:textSize="14sp" />
+                android:text="@{'(' + result.percentOff+ ')'}"
+                android:textSize="14sp"
+                android:transitionName="discount"
+                android:visibility="@{result.price != result.originalPrice? View.GONE: View.VISIBLE}" />
 
         </RelativeLayout>
 

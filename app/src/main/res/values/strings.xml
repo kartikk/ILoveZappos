@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ILoveZappos</string>
+    <string name="style_code">Style code:</string>
+    <string name="color_code">Color code:</string>
 </resources>

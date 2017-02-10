@@ -1,7 +1,13 @@
 package com.kartikk.zappos.ilovezappos;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.graphics.Paint;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +50,33 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ZapposResult zapposResult = zapposResultList.get(position);
-        CardSearchResultBinding cardSearchResultBinding = DataBindingUtil.findBinding(holder.itemView);
+        final Context context = holder.itemView.getContext();
+        final ZapposResult zapposResult = zapposResultList.get(position);
+        final CardSearchResultBinding cardSearchResultBinding = DataBindingUtil.findBinding(holder.itemView);
         cardSearchResultBinding.setResult(zapposResult);
         cardSearchResultBinding.executePendingBindings();
+//        if (!zapposResult.getOriginalPrice().equals(zapposResult.getPrice())) {
+        cardSearchResultBinding.cardSearchOrgPriceText
+                .setPaintFlags(
+                        cardSearchResultBinding.cardSearchOrgPriceText.getPaintFlags()
+                                | Paint.STRIKE_THRU_TEXT_FLAG);
+//        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent detailPageIntent = new Intent(context, DetailActivity.class);
+                detailPageIntent.putExtra("result", zapposResult);
+                Pair<View, String> p1 = Pair.create((View) cardSearchResultBinding.cardSearchNameText, "product_name");
+                Pair<View, String> p2 = Pair.create((View) cardSearchResultBinding.cardSearchBrandText, "brand_name");
+                Pair<View, String> p3 = Pair.create((View) cardSearchResultBinding.cardSearchOrgPriceText, "org_price");
+                Pair<View, String> p4 = Pair.create((View) cardSearchResultBinding.cardSearchPriceText, "price");
+                Pair<View, String> p5 = Pair.create((View) cardSearchResultBinding.cardSearchDiscountText, "discount");
+                Pair<View, String> p6 = Pair.create((View) cardSearchResultBinding.cardSearchImageView, "image");
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation((Activity) context, p1, p2, p3, p4, p5, p6);
+                context.startActivity(detailPageIntent, activityOptionsCompat.toBundle());
+            }
+        });
     }
 
     @Override
@@ -66,4 +95,5 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     public static void loadImage(ImageView imageView, String url) {
         Picasso.with(imageView.getContext()).load(url).into(imageView);
     }
+
 }
