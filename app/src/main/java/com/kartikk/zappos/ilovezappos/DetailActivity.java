@@ -36,6 +36,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ItemDetailBinding itemDetailBinding = DataBindingUtil.setContentView(this, R.layout.item_detail);
+        setSupportActionBar(itemDetailBinding.detailToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         result = getIntent().getParcelableExtra("result");
         itemDetailBinding.setResult(result);
