@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<ZapposModel> call, Response<ZapposModel> response) {
                         Log.d(TAG, "Search success");
                         SearchRecyclerAdapter searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
+                        searchRecyclerView.setVisibility(View.VISIBLE);
                         searchRecyclerView.setAdapter(searchRecyclerAdapter);
                         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     }
