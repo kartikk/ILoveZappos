@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView searchRecyclerView;
     Endpoints endpoints;
     SearchRecyclerAdapter searchRecyclerAdapter;
+    String searchText = " ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +37,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (searchText != null) {
+            outState.putString("search", searchText);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        searchText = savedInstanceState.getString("search");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search_icon);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setIconified(false);
+        if (searchText != null) {
+            searchView.setQuery(searchText, false);
+        } else {
+            searchText = " ";
+        }
         if (endpoints == null) {
             endpoints = Helper.getRetrofitEndpoints();
         }
-        Call<ZapposModel> call = endpoints.search(" ", Constants.authKey);
+        Call<ZapposModel> call = endpoints.search(searchText, Constants.authKey);
         call.enqueue(new Callback<ZapposModel>() {
             @Override
             public void onResponse(Call<ZapposModel> call, Response<ZapposModel> response) {
-                if(searchRecyclerAdapter == null) {
+                if (searchRecyclerAdapter == null) {
                     searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
                     searchRecyclerView.setVisibility(View.VISIBLE);
                     searchRecyclerView.setAdapter(searchRecyclerAdapter);
@@ -77,11 +97,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 newText = newText.trim();
+                searchText = newText;
                 Call<ZapposModel> call = endpoints.search(newText, Constants.authKey);
                 call.enqueue(new Callback<ZapposModel>() {
                     @Override
                     public void onResponse(Call<ZapposModel> call, Response<ZapposModel> response) {
-                        if(searchRecyclerAdapter == null) {
+                        if (searchRecyclerAdapter == null) {
                             searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
                             searchRecyclerView.setVisibility(View.VISIBLE);
                             searchRecyclerView.setAdapter(searchRecyclerAdapter);

@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringConfig;
-import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.kartikk.zappos.ilovezappos.databinding.ItemDetailBinding;
 import com.kartikk.zappos.ilovezappos.models.ZapposResult;
