@@ -3,4 +3,14 @@
     <string name="style_code">Style code:</string>
     <string name="color_code">Color code:</string>
     <string name="search_error">Unable to fetch results</string>
+    <string name="shoe_size_prompt">Select size</string>
+    <string-array name="shoe_size_array">
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+    </string-array>
 </resources>

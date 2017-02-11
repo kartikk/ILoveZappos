@@ -43,6 +43,7 @@
                 android:ellipsize="marquee"
                 android:maxLines="1"
                 android:text="@{result.productName}"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:transitionName="product_name" />
 
