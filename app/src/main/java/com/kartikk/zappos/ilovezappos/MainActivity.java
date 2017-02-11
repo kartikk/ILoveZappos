@@ -12,11 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.kartikk.zappos.ilovezappos.models.ZapposModel;
 import com.kartikk.zappos.ilovezappos.util.Constants;
 import com.kartikk.zappos.ilovezappos.util.Endpoints;
 import com.kartikk.zappos.ilovezappos.util.Helper;
 
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         searchRecyclerView = (RecyclerView) findViewById(R.id.recyclerView1);
     }
@@ -112,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
                             searchRecyclerAdapter.notifyDataSetChanged();
                         }
                         Log.d(TAG, "Search success");
+
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Search")
+                                .putContentType("String")
+                                .putContentId("12")
+                                .putCustomAttribute("Search text", searchText));
                     }
 
                     @Override

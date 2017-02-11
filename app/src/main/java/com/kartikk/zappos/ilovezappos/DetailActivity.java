@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringConfig;
@@ -71,6 +73,13 @@ public class DetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("DetailActivity")
+                .putContentType("String")
+                .putContentId("11")
+                .putCustomAttribute("name", result.getProductName())
+                .putCustomAttribute("id", result.getProductId()));
     }
 
     @Override
