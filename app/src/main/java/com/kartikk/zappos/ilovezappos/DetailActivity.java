@@ -5,12 +5,19 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringConfig;
+import com.facebook.rebound.SpringListener;
+import com.facebook.rebound.SpringSystem;
 import com.kartikk.zappos.ilovezappos.databinding.ItemDetailBinding;
 import com.kartikk.zappos.ilovezappos.models.ZapposResult;
 import com.squareup.picasso.Picasso;
@@ -37,6 +44,34 @@ public class DetailActivity extends AppCompatActivity {
                 .setPaintFlags(
                         itemDetailBinding.detailOrgPriceText.getPaintFlags()
                                 | Paint.STRIKE_THRU_TEXT_FLAG);
+        final FloatingActionButton fab = itemDetailBinding.fab;
+        SpringSystem springSystem = SpringSystem.create();
+        SpringConfig springConfig = new SpringConfig(800, 15);
+        final Spring spring = springSystem.createSpring();
+        spring.setSpringConfig(springConfig);
+        spring.addListener(new SimpleSpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float value = (float) spring.getCurrentValue();
+                float scale = 1f - (value * 0.5f);
+                fab.setScaleX(scale);
+                fab.setScaleY(scale);
+            }
+        });
+        fab.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        spring.setEndValue(1f);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        spring.setEndValue(0f);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
