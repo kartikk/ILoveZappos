@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_share_icon"
+        android:icon="@drawable/icon_share_vector"
+        android:title="Share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_cart_icon"
+        android:icon="@drawable/icon_cart_vector"
+        android:title="Cart"
+        app:showAsAction="ifRoom" />
+
+</menu>
