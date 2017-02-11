@@ -1,5 +1,6 @@
 package com.kartikk.zappos.ilovezappos;
 
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
@@ -29,13 +30,14 @@ import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
 
+    ZapposResult result;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ItemDetailBinding itemDetailBinding = DataBindingUtil.setContentView(this, R.layout.item_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ZapposResult result = getIntent().getParcelableExtra("result");
+        result = getIntent().getParcelableExtra("result");
         itemDetailBinding.setResult(result);
         if (result.getOriginalPrice().equals(result.getPrice())) {
             itemDetailBinding.detailOrgPriceText.setVisibility(View.GONE);
@@ -88,6 +90,9 @@ public class DetailActivity extends AppCompatActivity {
             case android.R.id.home:
                 supportFinishAfterTransition();
                 return true;
+            case R.id.menu_share_icon:
+                shareItem();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -95,6 +100,15 @@ public class DetailActivity extends AppCompatActivity {
     @BindingAdapter("bind:imageUrl")
     public static void loadImage(ImageView imageView, String url) {
         Picasso.with(imageView.getContext()).load(url).into(imageView);
+    }
+
+    public void shareItem() {
+        if(result!=null){
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, result.getProductUrl());
+            startActivity(Intent.createChooser(shareIntent, "Share link using"));
+        }
     }
 
     @Override
