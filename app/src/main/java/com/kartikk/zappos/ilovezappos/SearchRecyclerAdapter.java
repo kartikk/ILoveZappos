@@ -31,6 +31,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     List<ZapposResult> zapposResultList;
     final String TAG = SearchRecyclerAdapter.class.getSimpleName();
 
+    public void setZapposResultList(ZapposModel zapposModel) {
+        this.zapposResultList = new ArrayList<>(zapposModel.getResults());
+    }
+
     public SearchRecyclerAdapter(List<ZapposResult> zapposResultList) {
         this.zapposResultList = new ArrayList<>(zapposResultList);
     }

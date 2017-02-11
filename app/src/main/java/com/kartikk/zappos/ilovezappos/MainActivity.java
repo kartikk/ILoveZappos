@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = MainActivity.class.getSimpleName();
     RecyclerView searchRecyclerView;
     Endpoints endpoints;
+    SearchRecyclerAdapter searchRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,34 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search_icon);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setIconified(false);
+        if (endpoints == null) {
+            endpoints = Helper.getRetrofitEndpoints();
+        }
+        Call<ZapposModel> call = endpoints.search(" ", Constants.authKey);
+        call.enqueue(new Callback<ZapposModel>() {
+            @Override
+            public void onResponse(Call<ZapposModel> call, Response<ZapposModel> response) {
+                if(searchRecyclerAdapter == null) {
+                    searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
+                    searchRecyclerView.setVisibility(View.VISIBLE);
+                    searchRecyclerView.setAdapter(searchRecyclerAdapter);
+                    searchRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                } else {
+                    searchRecyclerAdapter.setZapposResultList(response.body());
+                    searchRecyclerAdapter.notifyDataSetChanged();
+                }
+                Log.d(TAG, "Search success");
+            }
+
+            @Override
+            public void onFailure(Call<ZapposModel> call, Throwable t) {
+                Log.d(TAG, "Search failure");
+                View parentLayout = findViewById(R.id.activity_main);
+                Snackbar.make(parentLayout, getResources()
+                        .getText(R.string.search_error), Snackbar.LENGTH_LONG).show();
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -47,19 +76,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (endpoints == null) {
-                    endpoints = Helper.getRetrofitEndpoints();
-                }
                 newText = newText.trim();
                 Call<ZapposModel> call = endpoints.search(newText, Constants.authKey);
                 call.enqueue(new Callback<ZapposModel>() {
                     @Override
                     public void onResponse(Call<ZapposModel> call, Response<ZapposModel> response) {
+                        if(searchRecyclerAdapter == null) {
+                            searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
+                            searchRecyclerView.setVisibility(View.VISIBLE);
+                            searchRecyclerView.setAdapter(searchRecyclerAdapter);
+                            searchRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        } else {
+                            searchRecyclerAdapter.setZapposResultList(response.body());
+                            searchRecyclerAdapter.notifyDataSetChanged();
+                        }
                         Log.d(TAG, "Search success");
-                        SearchRecyclerAdapter searchRecyclerAdapter = new SearchRecyclerAdapter(response.body());
-                        searchRecyclerView.setVisibility(View.VISIBLE);
-                        searchRecyclerView.setAdapter(searchRecyclerAdapter);
-                        searchRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     }
 
                     @Override

@@ -10,6 +10,6 @@
         android:id="@+id/menu_cart_icon"
         android:icon="@drawable/icon_cart_vector"
         android:title="Cart"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>
